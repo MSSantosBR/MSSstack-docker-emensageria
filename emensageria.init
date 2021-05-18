@@ -1,0 +1,8 @@
+#!/bin/bash
+#set -x
+
+cd $(dirname "$0")
+docker-compose down
+docker-compose rm -f
+docker-compose up -d
+docker ps

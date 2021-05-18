@@ -1,0 +1,19 @@
+FROM postgres
+LABEL author="mario@clinfo.com.br"
+
+COPY ./01-createdb_emensageria_db.sql /docker-entrypoint-initdb.d
+
+RUN apt-get update ; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils ; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update ; \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends mc ; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN export TZ="America/Sao_Paulo" ; \
+    export LANG="pt_BR.UTF-8" ; \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone ; \
+    localedef -i pt_BR -c -f UTF-8 -A /usr/share/locale/locale.alias pt_BR.UTF-8 ; \
+    echo "\nexport TERM=xterm" >> /etc/bash.bashrc ; \
+    echo "alias dir='ls --color=auto -lAsh'" >> /root/.bashrc

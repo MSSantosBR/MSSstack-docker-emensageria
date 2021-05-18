@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  emensageria_db:
+    container_name: eMensageriaDB
+    user: "root"
+    restart: always
+    ports:
+      - "5499:5432"
+    volumes:
+    - ${EMENSAGERIA_VOLUME_DATA}/backups:/backups
+    env_file:
+    - ${EMENSAGERIA_VOLUME_DOCKER}/postgres.env
+    build:
+      context: ${EMENSAGERIA_VOLUME_DOCKER}/.
+      dockerfile: Dockerfile.db
+
+  emensageria_app:
+    container_name: eMensageriaApp
+    user: "root"
+    restart: always
+    links:
+    - emensageria_db
+    ports:
+      - "8000:8000"
+    volumes:
+    - ${EMENSAGERIA_VOLUME_DATA}/logs:/appdata/logs
+    - ${EMENSAGERIA_VOLUME_DATA}/arquivos:/app/arquivos
+    - ${EMENSAGERIA_VOLUME_DATA}/repositorios/certificados:/app/certificados/certificado_valido
+    - ${EMENSAGERIA_VOLUME_APP}:/app
+    command: uwsgi --ini /requirements/uwsgi.ini
+    build:
+      context: ${EMENSAGERIA_VOLUME_DOCKER}/.
+      dockerfile: Dockerfile.app
