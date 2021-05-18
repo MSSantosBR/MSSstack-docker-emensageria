@@ -90,7 +90,7 @@ $ docker exec -it eMensageriaApp bash
 ```
 
 - A execução do script emensageria.end finalizar os dockers e após é necessário repetir o passo 1.4.
-- ATENÇÃO! A execução deste comando provoca a perda do banco de dados. Realize os devidos backups antes de proseeguir.
+- ATENÇÃO! A execução deste comando provoca a perda do banco de dados. Realize os devidos backups antes de prosseguir.
 ```console
 $ sh ~/emensageria/docker/emensageria.end
 ```
